@@ -1,1 +1,0 @@
--T ./STM32F103C8TX_FLASH.ld -mcpu=cortex-m3 -mthumb -mthumb-interwork -o "./MyRTOS.elf" "./main.o" "./keypad.o" "./lcd.o" "./stm32f103x8_rcc_driver.o" "./stm32f103x8_spi_drver.o" "./stm32f103x8_exti_driver.o" "./stm32f103x8_usart_driver.o" "./stm32f103x8_gpio_driver.o" "./cortexmx_os_porting.o" "./fifo.o" "./scheduler.o" -nostartfiles -lm
