@@ -1,0 +1,1 @@
+-T ./STM32F103C8TX_FLASH.ld -mcpu=cortex-m3 -mthumb -mthumb-interwork -o "./Objects/MyRTOS Scheduler.elf" "./objects/main.o" "./objects/cortexmx_os_porting.o" "./objects/scheduler.o" "./objects/fifo.o" "./objects/startup_stm32f103c8tx.o" -nostartfiles -lm

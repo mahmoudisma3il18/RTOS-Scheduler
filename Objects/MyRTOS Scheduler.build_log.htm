@@ -1,0 +1,56 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.38.0.0
+Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Mahmoud Ismail, ASU, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.38.0.0
+Toolchain Path:  C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.3 rel1\bin
+C Compiler:      GCC.exe
+Assembler:       AS.exe
+Linker/Locator:  LD.exe
+Library Manager: AR.exe
+Hex Converter:   OBJCOPY.exe
+CPU DLL:         SARMCM3.DLL V5.38.0.0
+Dialog DLL:      DARMSTM.DLL V1.69.1.0
+Target DLL:      UL2CM3.DLL V1.164.8.0
+Dialog DLL:      TARMSTM.DLL V1.67.1.0
+ 
+<h2>Project:</h2>
+D:\Embedded Systems\GitHub Projects\RTOS-Scheduler\MyRTOS Scheduler.uvprojx
+Project File Date:  10/24/2023
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling startup_stm32f103c8tx.s...
+compiling CortexMx_OS_Porting.c...
+RTOS Layers/CortexMx_OS_Porting.c: In function 'SysTick_Handler':
+RTOS Layers/CortexMx_OS_Porting.c(54): warning: implicit declaration of function 'MyRTOS_updateWaitingTime' [-Wimplicit-function-declaration]
+RTOS Layers/CortexMx_OS_Porting.c(57): warning: implicit declaration of function 'MyRTOS_decideWhatNext' [-Wimplicit-function-declaration]
+compiling FIFO.c...
+compiling main.c...
+compiling scheduler.c...
+RTOS Layers/scheduler.c: In function 'MyRTOS_CreateTaskStack':
+RTOS Layers/scheduler.c(415): warning: assignment to 'uint32_t *' {aka 'long unsigned int *'} from 'uint32_t' {aka 'long unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
+linking...
+".\Objects\MyRTOS Scheduler.elf" - 0 Error(s), 3 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32F1xx_DFP.2.4.1.pack
+                Keil.STM32F1xx_DFP.2.4.1
+                STMicroelectronics STM32F1 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  D:/Embedded Systems/Keil_v5/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include
+
+<h2>Collection of Component Files used:</h2>
+Build Time Elapsed:  00:00:00
+</pre>
+</body>
+</html>
