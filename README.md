@@ -33,43 +33,36 @@ git clone https://github.com/mahmoudisma3il18/RTOS-Scheduler.git
 5. Create tasks using the `MyRTOS_CreateTask` function and implement your task functions.
 6. Start the operating system using `MyRTOS_startOS` to begin task scheduling.
 
-## Usage
+### Usage
 
 To use MyRTOS in your application, follow these steps:
 
 1. **Initializing MyRTOS**:
    ```c
    MyRTOS_Init();
-Creating a Task:
-
-c
-Copy code
+2. **Creating a Task**:
+ ```c
 Task_Reference myTask;
 MyRTOS_CreateTask(&myTask);
-Activating a Task:
-
-c
-Copy code
+```
+3. **Activating a Task**:
+```c
 MyRTOS_ActivateTask(&myTask);
-Terminating a Task:
-
-c
-Copy code
+```
+4. **Terminating a Task**: 
+```c
 MyRTOS_TerminateTask(&myTask);
-Starting the Operating System:
-
-c
-Copy code
+```
+5. **Starting the Operating System**:
+```c
 MyRTOS_startOS();
-Waiting in a Task:
-
-c
-Copy code
+```
+6. **Waiting in a Task**:
+```c
 MyRTOS_waitTask(ticks, &myTask);
-Acquiring and Releasing Mutex:
-
-c
-Copy code
+```
+7. **Acquiring and Releasing Mutex**:
+```c
 Mutex_Reference myMutex;
 MyRTOS_AcquierMutex(&myMutex, &myTask);
 MyRTOS_ReleaseMutex(&myMutex);
