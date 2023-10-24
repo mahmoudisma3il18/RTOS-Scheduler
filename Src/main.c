@@ -34,7 +34,6 @@ unsigned char payload[3] = {1,2,3} ;
 unsigned char payload2[3] = {1,2,3} ;
 
 
-
 Task_Reference Task1_Ref;
 Task_Reference Task2_Ref,Task3_Ref,Task4_Ref;
 uint8_t Task1Led,Task2Led,Task3Led,Task4Led;
@@ -47,21 +46,19 @@ void Task1(void){
 		counter++;
 		if(counter == 100)
 		{
-			MyRTOS_AcquierMutex(&Mutex1, &Task1_Ref);
-			MyRTOS_ActivateTask(&Task4_Ref);
-			MyRTOS_AcquierMutex(&Mutex2, &Task1_Ref);
+			MyRTOS_AcquierMutex(&Mutex1,&Task1_Ref);
+			MyRTOS_ActivateTask(&Task2_Ref);
 		}
 		if(counter == 200)
 		{
-			counter = 0 ;
+			counter = 0;
 			MyRTOS_ReleaseMutex(&Mutex1);
 		}
-
 	}
-
 }
 
 void Task2(void){
+	
 	static int counter =0 ;
 	while(1){
 		Task2Led ^= 0x1;  /* Logic High */
@@ -75,6 +72,8 @@ void Task2(void){
 			counter = 0;
 			MyRTOS_TerminateTask(&Task2_Ref);
 		}
+		
+		
 	}
 
 }
@@ -94,30 +93,27 @@ void Task3(void) {
 			counter = 0;
 			MyRTOS_TerminateTask(&Task3_Ref);
 		}
+   
 	}
 
 }
 
 void Task4(void) {
 	static int counter =0 ;
-
 	while(1){
 		Task4Led ^= 0x1;  /* Logic High */
 		counter++;
+		if(counter == 5)
+		{
+			MyRTOS_AcquierMutex(&Mutex1,&Task4_Ref);
+		}
 		if(counter == 200)
 		{
 			counter = 0;
 			MyRTOS_ReleaseMutex(&Mutex1);
 			MyRTOS_TerminateTask(&Task4_Ref);
 		}
-		if(counter == 5)
-		{
-			MyRTOS_AcquierMutex(&Mutex2, &Task4_Ref);
-			MyRTOS_AcquierMutex(&Mutex1, &Task4_Ref);
-		}
 	}
-
-
 }
 
 
@@ -168,6 +164,8 @@ int main(void)
 	MyRTOS_CreateTask(&Task4_Ref);
 
 	MyRTOS_ActivateTask(&Task1_Ref);
+
+
 
 
 	MyRTOS_startOS();

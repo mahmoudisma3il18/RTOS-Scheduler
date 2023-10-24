@@ -5,7 +5,6 @@
 #include "ARMCM3.h"
 #include "core_cm3.h"
 
-
 /*----------------------- Defines --------------------------*/
 
 /* Set PSP with given address */				
@@ -33,9 +32,11 @@
 
 /* Define PendSv Handler */
 #define OS_PendSV                     PendSV_Handler
+
+/* Define Systick Handler */      
+#define OS_Systick                    SysTick_Handler
 /*------------------------ Global Variables --------------------*/
 extern uint32_t _estack;                        /* Top of Stack */
-extern uint32_t _eheap;                         /* Heap */
 
 /*--------------------------- Functions -------------------------*/
 

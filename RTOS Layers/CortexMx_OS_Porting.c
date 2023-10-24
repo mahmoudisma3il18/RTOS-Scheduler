@@ -2,9 +2,6 @@
 #include "CortexMx_OS_Porting.h"
 
 
-/* Global Variables */
-
-volatile uint8_t SystickLed;
 /*---------------- Exception Handlers -----------------------*/
 
 /* HardFault Handler */
@@ -45,22 +42,6 @@ __attribute ((naked)) void SVC_Handler()
 
 }
 
-/* Systick Handler */
-void SysTick_Handler(void){
-
-	SystickLed = 0x1;     /* Set HIGH */
-
-	/* Update Waiting Time */
-	MyRTOS_updateWaitingTime();
-
-	/* Decide next Task */
-	MyRTOS_decideWhatNext();
-
-	/* Trigger PendSV Interrupt */
-	OS_TRIGGER_PENDSV();
-
-	SystickLed = 0x0;      /* Set Low */
-}
 
 
 /* Initiliaze Hardware (MCU) */
@@ -71,6 +52,7 @@ void HW_Init(void)
 
 }
 
+/* Setup Systick intterupt duration */
 void startTicker(void)
 {
 	/* Interrupt every 1 Ms */
