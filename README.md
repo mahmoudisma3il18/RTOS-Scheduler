@@ -38,8 +38,9 @@ git clone https://github.com/mahmoudisma3il18/RTOS-Scheduler.git
 To use MyRTOS in your application, follow these steps:
 
 1. **Initializing MyRTOS**:
-   ```c
-   MyRTOS_Init();
+```c
+MyRTOS_Init();
+```
 2. **Creating a Task**:
  ```c
 Task_Reference myTask;
