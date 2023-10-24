@@ -26,6 +26,7 @@ To start using MyRTOS in your Cortex-M3 projects, follow these simple steps:
 ```bash
 # git clone https://github.com/mahmoudisma3il18/RTOS-Scheduler.git
 ```
+
 2. Include the MyRTOS source files in your project.
 3. Configure the MyRTOS according to your system requirements, such as stack sizes, maximum tasks, etc.
 4. Initialize MyRTOS using the `MyRTOS_Init` function in your application's setup code.
