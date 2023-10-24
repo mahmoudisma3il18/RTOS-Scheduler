@@ -72,7 +72,8 @@ MyRTOS_ReleaseMutex(&myMutex);
 ### Images
 ![Round Robin Algo](https://github.com/mahmoudisma3il18/RTOS-Scheduler/assets/103974340/a1f9ebad-0e33-4b76-a86f-89899d98ab5a)
 ![Priority Inversion](https://github.com/mahmoudisma3il18/RTOS-Scheduler/assets/103974340/8d0a4d09-094a-45d8-83a5-71625e497339)
-![Priority Preemptive Round Roubin](https://github.com/mahmoudisma3il18/RTOS-Scheduler/assets/103974340/5824b45d-0b74-4ca1-8917-b0ad48e88b97)
+![Priority Preemptive Round Roubin](https://github.com/mahmoudisma3il18/RTOS-Scheduler/assets/103974340/05c42948-685f-44d9-8cd0-e1ea8c1778e0)
+
 
 
 
