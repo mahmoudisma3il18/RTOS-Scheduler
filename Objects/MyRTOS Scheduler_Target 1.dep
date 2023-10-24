@@ -1,6 +1,6 @@
 Dependencies for Project 'MyRTOS Scheduler', Target 'Target 1': (DO NOT MODIFY !)
 CompilerVersion: 6190000::V6.19::ARMCLANG
-F (.\Src\main.c)(0x6537FE38)(-c -mcpu=cortex-m3 -mthumb -gdwarf-2 -MD -Wall -O0 -mapcs-frame -mthumb-interwork -I "./RTOS Layers/inc" -I ./CMSIS -I"D:/Embedded Systems/Keil_v5/ARM/CMSIS/Include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/lib/gcc/arm-none-eabi/12.3.1/include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include/c++/12.3.1" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include/c++/12.3.1/arm-none-eabi" -D__UVISION_VERSION="538" -D__GCC -D__GCC_VERSION="1231" -DSTM32F10X_MD-o ./objects/main.o)
+F (.\Src\main.c)(0x65384A26)(-c -mcpu=cortex-m3 -mthumb -gdwarf-2 -MD -Wall -O0 -mapcs-frame -mthumb-interwork -I "./RTOS Layers/inc" -I ./CMSIS -I"D:/Embedded Systems/Keil_v5/ARM/CMSIS/Include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/lib/gcc/arm-none-eabi/12.3.1/include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include/c++/12.3.1" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include/c++/12.3.1/arm-none-eabi" -D__UVISION_VERSION="538" -D__GCC -D__GCC_VERSION="1231" -DSTM32F10X_MD-o ./objects/main.o)
 I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\lib\gcc\arm-none-eabi\12.3.1\include\stdint.h)(0x649B7130)
 I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\arm-none-eabi\include\stdint.h)(0x649B6CD4)
 I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\arm-none-eabi\include\machine\_default_types.h)(0x649B6CD4)
@@ -25,7 +25,7 @@ I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\arm-none-eab
 I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\arm-none-eabi\include\stdio.h)(0x649B6CD4)
 I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\lib\gcc\arm-none-eabi\12.3.1\include\stdarg.h)(0x649B7130)
 I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\arm-none-eabi\include\sys\stdio.h)(0x649B6CD6)
-I (RTOS Layers\inc\scheduler.h)(0x6537F074)
+I (RTOS Layers\inc\scheduler.h)(0x65384883)
 I (RTOS Layers\inc\CortexMx_OS_Porting.h)(0x6537EF36)
 I (CMSIS\ARMCM3.h)(0x6536FEF1)
 I (CMSIS\core_cm3.h)(0x6536FEF1)
@@ -52,8 +52,8 @@ I (CMSIS\cmsis_version.h)(0x6536FEF1)
 I (CMSIS\cmsis_compiler.h)(0x6537054B)
 I (CMSIS\cmsis_gcc.h)(0x6536FEF1)
 I (CMSIS\system_ARMCM3.h)(0x6536FEF1)
-F (.\RTOS Layers\scheduler.c)(0x6537FAF6)(-c -mcpu=cortex-m3 -mthumb -gdwarf-2 -MD -Wall -O0 -mapcs-frame -mthumb-interwork -I "./RTOS Layers/inc" -I ./CMSIS -I"D:/Embedded Systems/Keil_v5/ARM/CMSIS/Include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/lib/gcc/arm-none-eabi/12.3.1/include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include/c++/12.3.1" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include/c++/12.3.1/arm-none-eabi" -D__UVISION_VERSION="538" -D__GCC -D__GCC_VERSION="1231" -DSTM32F10X_MD-o ./objects/scheduler.o)
-I (RTOS Layers\inc\scheduler.h)(0x6537F074)
+F (.\RTOS Layers\scheduler.c)(0x65384B33)(-c -mcpu=cortex-m3 -mthumb -gdwarf-2 -MD -Wall -O0 -mapcs-frame -mthumb-interwork -I "./RTOS Layers/inc" -I ./CMSIS -I"D:/Embedded Systems/Keil_v5/ARM/CMSIS/Include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/lib/gcc/arm-none-eabi/12.3.1/include" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include/c++/12.3.1" -I"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.3 rel1/arm-none-eabi/include/c++/12.3.1/arm-none-eabi" -D__UVISION_VERSION="538" -D__GCC -D__GCC_VERSION="1231" -DSTM32F10X_MD-o ./objects/scheduler.o)
+I (RTOS Layers\inc\scheduler.h)(0x65384883)
 I (RTOS Layers\inc\CortexMx_OS_Porting.h)(0x6537EF36)
 I (CMSIS\ARMCM3.h)(0x6536FEF1)
 I (CMSIS\core_cm3.h)(0x6536FEF1)
@@ -108,7 +108,7 @@ I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\lib\gcc\arm-
 I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\arm-none-eabi\include\stdint.h)(0x649B6CD4)
 I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\arm-none-eabi\include\sys\_intsup.h)(0x649B6CD4)
 I (c:\program files (x86)\arm gnu toolchain arm-none-eabi\12.3 rel1\arm-none-eabi\include\sys\_stdint.h)(0x649B6CD6)
-I (RTOS Layers\inc\scheduler.h)(0x6537F074)
+I (RTOS Layers\inc\scheduler.h)(0x65384883)
 I (RTOS Layers\inc\CortexMx_OS_Porting.h)(0x6537EF36)
 I (CMSIS\ARMCM3.h)(0x6536FEF1)
 I (CMSIS\core_cm3.h)(0x6536FEF1)

@@ -43,77 +43,78 @@ void Task1(void){
 	static int counter =0 ;
 	while(1){
 		Task1Led ^= 0x1;  /* Logic High */
-		counter++;
-		if(counter == 100)
-		{
-			MyRTOS_AcquierMutex(&Mutex1,&Task1_Ref);
-			MyRTOS_ActivateTask(&Task2_Ref);
-		}
-		if(counter == 200)
-		{
-			counter = 0;
-			MyRTOS_ReleaseMutex(&Mutex1);
-		}
+		MyRTOS_waitTask(50,&Task1_Ref);
+//		counter++;
+//		if(counter == 100)
+//		{
+//			MyRTOS_AcquierMutex(&Mutex1,&Task1_Ref);
+//			MyRTOS_ActivateTask(&Task2_Ref);
+//		}
+//		if(counter == 200)
+//		{
+//			counter = 0;
+//			MyRTOS_ReleaseMutex(&Mutex1);
+//		}
 	}
 }
 
 void Task2(void){
 	
-	static int counter =0 ;
-	while(1){
-		Task2Led ^= 0x1;  /* Logic High */
-		counter++;
-		if(counter == 100)
-		{
-			MyRTOS_ActivateTask(&Task3_Ref);
-		}
-		if(counter == 200)
-		{
-			counter = 0;
-			MyRTOS_TerminateTask(&Task2_Ref);
-		}
-		
-		
-	}
+//	static int counter =0 ;
+//	while(1){
+//		Task2Led ^= 0x1;  /* Logic High */
+//		counter++;
+//		if(counter == 100)
+//		{
+//			MyRTOS_ActivateTask(&Task3_Ref);
+//		}
+//		if(counter == 200)
+//		{
+//			counter = 0;
+//			MyRTOS_TerminateTask(&Task2_Ref);
+//		}
+//		
+//		
+//	}
 
 }
 
 void Task3(void) {
 
-	static int counter =0 ;
-	while(1){
-		Task3Led ^= 0x1;  /* Logic High */
-		counter++;
-		if(counter == 100)
-		{
-			MyRTOS_ActivateTask(&Task4_Ref);
-		}
-		if(counter == 200)
-		{
-			counter = 0;
-			MyRTOS_TerminateTask(&Task3_Ref);
-		}
-   
-	}
+//	static int counter =0 ;
+//	while(1){
+//		Task3Led ^= 0x1;  /* Logic High */
+//		counter++;
+//		if(counter == 100)
+//		{
+//			MyRTOS_ActivateTask(&Task4_Ref);
+//		}
+//		if(counter == 200)
+//		{
+//			counter = 0;
+//			MyRTOS_TerminateTask(&Task3_Ref);
+//		}
+//   
+//	}
 
 }
 
 void Task4(void) {
-	static int counter =0 ;
-	while(1){
-		Task4Led ^= 0x1;  /* Logic High */
-		counter++;
-		if(counter == 5)
-		{
-			MyRTOS_AcquierMutex(&Mutex1,&Task4_Ref);
-		}
-		if(counter == 200)
-		{
-			counter = 0;
-			MyRTOS_ReleaseMutex(&Mutex1);
-			MyRTOS_TerminateTask(&Task4_Ref);
-		}
-	}
+//	static int counter =0 ;
+//	while(1){
+//		Task4Led ^= 0x1;  /* Logic High */
+//		counter++;
+//		if(counter == 5)
+//		{
+//			MyRTOS_AcquierMutex(&Mutex1,&Task4_Ref);
+//		}
+//		if(counter == 200)
+//		{
+//			counter = 0;
+//			MyRTOS_ReleaseMutex(&Mutex1);
+//			MyRTOS_TerminateTask(&Task4_Ref);
+//		}
+//	}
 }
 
 
