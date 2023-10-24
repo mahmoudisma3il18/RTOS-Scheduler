@@ -25,9 +25,9 @@ To start using MyRTOS in your Cortex-M3 projects, follow these simple steps:
 1. Clone this repository or download the MyRTOS source code.
 
 ```bash
-git clone https://github.com/your-username/MyRTOS.git
+# git clone https://github.com/mahmoudisma3il18/RTOS-Scheduler.git
 
-Include the MyRTOS source files in your project.
+2. Include the MyRTOS source files in your project.
 
 Configure the MyRTOS according to your system requirements, such as stack sizes, maximum tasks, etc.
 
