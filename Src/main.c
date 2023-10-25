@@ -43,7 +43,7 @@ void Task1(void){
 	static int counter =0 ;
 	while(1){
 		Task1Led ^= 0x1;  /* Logic High */
-		MyRTOS_waitTask(50,&Task1_Ref);
+		MyRTOS_waitTask(2,&Task1_Ref);
 //		counter++;
 //		if(counter == 100)
 //		{
@@ -61,8 +61,8 @@ void Task1(void){
 void Task2(void){
 	
 //	static int counter =0 ;
-//	while(1){
-//		Task2Led ^= 0x1;  /* Logic High */
+	while(1){
+		Task2Led ^= 0x1;  /* Logic High */
 //		counter++;
 //		if(counter == 100)
 //		{
@@ -75,7 +75,7 @@ void Task2(void){
 //		}
 //		
 //		
-//	}
+	}
 
 }
 
@@ -143,7 +143,7 @@ int main(void)
 
 
 	Task2_Ref.Stack_Size = 1024;           /* Set Task1 Stack Size */
-	Task2_Ref.Task_Priority = 3;           /* Set Task1 Priority */
+	Task2_Ref.Task_Priority = 4;           /* Set Task1 Priority */
 	Task2_Ref.p_TaskEntry = Task2;         /* Set Task fucntion */
 	strcpy((char*)Task2_Ref.Task_Name, "Task 2"); /* Set Task Name */
 
@@ -165,6 +165,7 @@ int main(void)
 	MyRTOS_CreateTask(&Task4_Ref);
 
 	MyRTOS_ActivateTask(&Task1_Ref);
+	MyRTOS_ActivateTask(&Task2_Ref);
 
 
 

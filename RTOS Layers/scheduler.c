@@ -248,328 +248,331 @@ void MyRTOS_startOS(void) {
 void MyRTOS_decideWhatNext(void) {
 	
 	/* Queue is empty then put Idle Task */
-	if( (Ready_Queue.counter == 0) ) {
-		/*OS_Control.Current_Task->Task_State = TASK_RUNNING;
-			FIFO_enqueue(&Ready_Queue,OS_Control.Current_Task);
-		OS_Control.Next_Task = OS_Control.Current_Task;*/
-		IDLE_TASK.Task_State = TASK_RUNNING;
-		FIFO_enqueue(&Ready_Queue,&IDLE_TASK);
-		OS_Control.Next_Task = &IDLE_TASK;
-		
-	} 
-	else {
-		FIFO_dequeue(&Ready_Queue,&OS_Control.Next_Task);
-		OS_Control.Next_Task->Task_State = TASK_RUNNING;
-		//update Ready queue (to keep round robin Algo. happen)
-		if ((OS_Control.Current_Task->Task_Priority == OS_Control.Next_Task->Task_Priority )&&(OS_Control.Current_Task->Task_State != TASK_SUSPENDED))
-		{
-			FIFO_enqueue(&Ready_Queue, OS_Control.Current_Task);
-			OS_Control.Current_Task->Task_State = TASK_READY ;
-		}
-	}
-}
-
-/* Scheduler */
-void MyRTOS_updateSchedulerTable(void) {
-	
-	Task_Reference* Temp = NULL;
-	Task_Reference* CurrentTask;
-	Task_Reference* NextTask;
-	uint8_t i = 0;
-	
-	/* Update active tasks in bubble sorting */
-	bubbleSort();
-	
-	/* Empty the ready queue */
-	while(FIFO_dequeue(&Ready_Queue,&Temp) != FIFO_EMPTY);
-	
-	/* Fill Items in Ready Queue */
-	while(i < OS_Control.Number_Of_Active_Tasks  ) {
-		CurrentTask = OS_Control.Tasks[i];
-		NextTask = OS_Control.Tasks[i+1];
-		
-		
-		if(CurrentTask->Task_State != TASK_SUSPENDED) {
+	if( (Ready_Queue.counter == 0) && (OS_Control.Current_Task->Task_State != TASK_SUSPENDED) ) {
+		OS_Control.Current_Task->Task_State = TASK_RUNNING;
+		FIFO_enqueue(&Ready_Queue,OS_Control.Current_Task);
+		OS_Control.Next_Task = OS_Control.Current_Task;
+	} /* Queue is empty and last task is suppended , put Idle Task */
+		else if((Ready_Queue.counter == 0) && (OS_Control.Current_Task->Task_State == TASK_SUSPENDED)) {
 			
-			/* Reached end of array */
-			if(NextTask->Task_State == TASK_SUSPENDED ){
-				/* Insert Task in queue */
-				FIFO_enqueue(&Ready_Queue,CurrentTask);
-				/* Change state of task from waiting to ready */
-				CurrentTask->Task_State = TASK_READY;
-				break;
-			}
-			if(CurrentTask->Task_Priority < NextTask->Task_Priority) {
-				/* Insert Task in queue */
-				FIFO_enqueue(&Ready_Queue,CurrentTask);
-				/* Change state of task from waiting to ready */
-				CurrentTask->Task_State = TASK_READY;
-				break;
-			}
-			
-			else if(CurrentTask->Task_Priority == NextTask->Task_Priority){
-				
-				/* Insert Task in queue */
-				FIFO_enqueue(&Ready_Queue,CurrentTask);
-				/* Change state of task from waiting to ready */
-				CurrentTask->Task_State = TASK_READY;
-			}
-			else if (CurrentTask->Task_Priority > NextTask->Task_Priority)
+			IDLE_TASK.Task_State = TASK_RUNNING;
+			FIFO_enqueue(&Ready_Queue,&IDLE_TASK);
+			OS_Control.Next_Task = &IDLE_TASK;
+		} 
+		else {
+			FIFO_dequeue(&Ready_Queue,&OS_Control.Next_Task);
+			OS_Control.Next_Task->Task_State = TASK_RUNNING;
+			//update Ready queue (to keep round robin Algo. happen)
+			if ((OS_Control.Current_Task->Task_Priority == OS_Control.Next_Task->Task_Priority )&&(OS_Control.Current_Task->Task_State != TASK_SUSPENDED))
 			{
-				//not allowed to happen as we already reordered it by bubble sort
-				break ;
+				FIFO_enqueue(&Ready_Queue, OS_Control.Current_Task);
+				OS_Control.Current_Task->Task_State = TASK_READY ;
 			}
 		}
-		i++;
 	}
-}
-
-
-/* Initiliaze RTOS */
-void MyRTOS_Init(){
 	
-	
-	/* OS to suspend mode */
-	OS_Control.OS_Mode = OS_SUSPENED;
-	
-	/* Set Main Stack */
-	MyRTOS_SetMainStack();
-	
-	/* Create OS Ready Queue */
-	FIFO_init(&Ready_Queue,Read_Queue_Tasks,100); 
-	
-	/* Configure IDLE Task */
-	strcpy((char*)IDLE_TASK.Task_Name,"IDLE TASK");;    /* Set Idle Task Name */
-	IDLE_TASK.Task_Priority = 250;               /* Lowest Priority */
-	IDLE_TASK.p_TaskEntry = MyRTOS_IdleTask;     /* Set pointer to function */
-	IDLE_TASK.Stack_Size = 300;                  /* Stack Size 100 Bytes */
-	MyRTOS_CreateTask(&IDLE_TASK);
-}
-
-/* Creates Task */
-void MyRTOS_CreateTask(Task_Reference *Task) {
-	
-	
-	/* Create Task Stack */
-	Task->_S_TaskPSP = OS_Control.Task_Locator_PSP;
-	Task->_E_TaskPSP = Task->_S_TaskPSP - Task->Stack_Size;
-	
-	/*if(Task->_E_TaskPSP < ((uint32_t)(&_eheap))){
-		return ;
-	}*/
-	
-	/* 8 Bytes Safety margin after Task stack */
-	OS_Control.Task_Locator_PSP = Task->_E_TaskPSP - 8;
-	
-	/* Create Stack For Task */
-	MyRTOS_CreateTaskStack(Task);
-	
-	/* Put Task in tasks array */
-	OS_Control.Tasks[OS_Control.Number_Of_Active_Tasks] = Task;
-	(OS_Control.Number_Of_Active_Tasks)++;
-	
-	
-	/* Set Task State to Suspeneded */
-	Task->Task_State = TASK_SUSPENDED;
-	
-	
-}
-
-/* Activate Task */
-void MyRTOS_ActivateTask(Task_Reference *Task) {
-	
-	/* Change Task State to waiting from suspneded */
-	Task->Task_State = TASK_WAITING;
-	
-	/* Call SVC Exception */
-	MyRTOS_SVC_Set(ACTIVATE_TASK);
-	
-}
-
-
-/* Idle Task */
-void MyRTOS_IdleTask(void){
-	while(1) {
-		IdleLed ^= 1;
-		__asm("wfe");
-	}
-}
-
-/* Create Main Stack MSP */
-void MyRTOS_SetMainStack(void){
-	
-	/* Set start and end of main stack */
-	OS_Control._S_MSP = (uint32_t)&_estack ;
-	OS_Control._E_MSP = OS_Control._S_MSP - MAIN_STACK_SIZE ;
-	
-	/* 8 Bytes Safety margin after main stack */
-	OS_Control.Task_Locator_PSP = OS_Control._E_MSP - 8;
-	
-}
-
-/* Creates Task Stack PSP */
-void MyRTOS_CreateTaskStack(Task_Reference* Task) {
-	
-	/* Task Frame */
-	/*
-		* Pushed by MC :
-		* XPSR
-		* PC
-		* LR
-		* R12
-		* R3
-		* R2
-		* R1
-		* R0
-		* Pushed by user code :
-		* R4
-		* R5
-		* R6
-		* R7
-		* R8
-		* R9
-		* R11
-	*/
-	
-	Task->Current_PSP = Task->_S_TaskPSP;                    /* Set current PSP to Start address of stack of task */
-	
-	(Task->Current_PSP)--;
-	*(Task->Current_PSP) = 0x1000000;                        /* Push Dummy LR to stack , Bit-24 Must be 1 (thumb bit)*/
-	
-	(Task->Current_PSP)--;
-	*(Task->Current_PSP) = (uint32_t)Task->p_TaskEntry;      /* Set PC to Task Entry */
-	
-	(Task->Current_PSP)--;
-	*(Task->Current_PSP) = 0xFFFFFFFD ;                      /* LR = 0xFFFFFFFD (EXC_RETURN)Return to thread with PSP */
-	
-	/* Set from R0 to R12 with 0x00 */
-	for(uint8_t i = 0 ; i < 13 ; i++) {
-		(Task->Current_PSP)--;
-		*(Task->Current_PSP) = 0x00;
-	}
-}
-
-
-/* Terminates Task */
-void MyRTOS_TerminateTask(Task_Reference *Task) {
-	
-	/* Set Task State */
-	Task->Task_State = TASK_SUSPENDED;
-	/* Call SVC Exception */
-	MyRTOS_SVC_Set(TERMINATE_TASK);
-	
-}
-
-/* Put task in suspennded untill time is over */
-void MyRTOS_waitTask(uint32_t ticks,Task_Reference *Task) {
-	
-	/* Set Timing Wait and state */
-	Task->Time_Waiting.Blocking_State = ENABLED;
-	Task->Time_Waiting.Ticks_Count = ticks;
-	
-	/* Suspend task */
-	Task->Task_State = TASK_SUSPENDED;
-	
-	/* Terminate Task */
-	MyRTOS_SVC_Set(TERMINATE_TASK);
-}
-
-/* Update Task Waiting Time */
-void MyRTOS_updateWaitingTime(void) {
-	
-	/* Loop over active tasks */
-	for (int var = 0; var < OS_Control.Number_Of_Active_Tasks; var++) {
+	/* Scheduler */
+	void MyRTOS_updateSchedulerTable(void) {
 		
-		/* Check if Task is in waiting */
-		if(OS_Control.Tasks[var]->Task_State == TASK_SUSPENDED) {
+		Task_Reference* Temp = NULL;
+		Task_Reference* CurrentTask;
+		Task_Reference* NextTask;
+		uint8_t i = 0;
+		
+		/* Update active tasks in bubble sorting */
+		bubbleSort();
+		
+		/* Empty the ready queue */
+		while(FIFO_dequeue(&Ready_Queue,&Temp) != FIFO_EMPTY);
+		
+		/* Fill Items in Ready Queue */
+		while(i < OS_Control.Number_Of_Active_Tasks  ) {
+			CurrentTask = OS_Control.Tasks[i];
+			NextTask = OS_Control.Tasks[i+1];
 			
-			/* Check if Timing waiting is enabled */
-			if(OS_Control.Tasks[var]->Time_Waiting.Blocking_State == ENABLED) {
+			
+			if(CurrentTask->Task_State != TASK_SUSPENDED) {
 				
-				/* Decrement ticks */
-				OS_Control.Tasks[var]->Time_Waiting.Ticks_Count--;
+				/* Reached end of array */
+				if(NextTask->Task_State == TASK_SUSPENDED ){
+					/* Insert Task in queue */
+					FIFO_enqueue(&Ready_Queue,CurrentTask);
+					/* Change state of task from waiting to ready */
+					CurrentTask->Task_State = TASK_READY;
+					break;
+				}
+				if(CurrentTask->Task_Priority < NextTask->Task_Priority) {
+					/* Insert Task in queue */
+					FIFO_enqueue(&Ready_Queue,CurrentTask);
+					/* Change state of task from waiting to ready */
+					CurrentTask->Task_State = TASK_READY;
+					break;
+				}
 				
-				/* Check if time is ended */
-				if(OS_Control.Tasks[var]->Time_Waiting.Ticks_Count == 1) {
+				else if(CurrentTask->Task_Priority == NextTask->Task_Priority){
 					
-					/* Disable time waiting */
-					OS_Control.Tasks[var]->Time_Waiting.Blocking_State = DISABLED;
-					
-					/* Change state of task to waiting */
-					OS_Control.Tasks[var]->Task_State = TASK_WAITING;
-					
-					/* Call SVC */
-					MyRTOS_SVC_Set(WAITING_TASK);
+					/* Insert Task in queue */
+					FIFO_enqueue(&Ready_Queue,CurrentTask);
+					/* Change state of task from waiting to ready */
+					CurrentTask->Task_State = TASK_READY;
+				}
+				else if (CurrentTask->Task_Priority > NextTask->Task_Priority)
+				{
+					//not allowed to happen as we already reordered it by bubble sort
+					break ;
 				}
 			}
+			i++;
 		}
-		
 	}
-}
-
-
-/* Acquire Mutex */
-void MyRTOS_AcquierMutex(Mutex_Reference* Mutex,Task_Reference* Task){
 	
-	/* Check if mutex is free */
-	if(Mutex->Current_Task == NULL) {
-		/* Assign mutex to task */
-		Mutex->Current_Task = Task;
+	
+	/* Initiliaze RTOS */
+	void MyRTOS_Init(){
+		
+		
+		/* OS to suspend mode */
+		OS_Control.OS_Mode = OS_SUSPENED;
+		
+		/* Set Main Stack */
+		MyRTOS_SetMainStack();
+		
+		/* Create OS Ready Queue */
+		FIFO_init(&Ready_Queue,Read_Queue_Tasks,100); 
+		
+		/* Configure IDLE Task */
+		strcpy((char*)IDLE_TASK.Task_Name,"IDLE TASK");;    /* Set Idle Task Name */
+		IDLE_TASK.Task_Priority = 250;               /* Lowest Priority */
+		IDLE_TASK.p_TaskEntry = MyRTOS_IdleTask;     /* Set pointer to function */
+		IDLE_TASK.Stack_Size = 300;                  /* Stack Size 100 Bytes */
+		MyRTOS_CreateTask(&IDLE_TASK);
 	}
-	else
-	{
-		if(Mutex->Next_Task == NULL){
-			
-			/* Set Mutex to Next Task */
-			Mutex->Next_Task = Task;
-			
-			/* Change Task state to suppedned */
-			Task->Task_State = TASK_SUSPENDED;
-			MyRTOS_SVC_Set(TERMINATE_TASK);
-			
-		}
-		else{
-			
-			/* Cannot acquire mutex */
+	
+	/* Creates Task */
+	void MyRTOS_CreateTask(Task_Reference *Task) {
+		
+		
+		/* Create Task Stack */
+		Task->_S_TaskPSP = OS_Control.Task_Locator_PSP;
+		Task->_E_TaskPSP = Task->_S_TaskPSP - Task->Stack_Size;
+		
+		/*if(Task->_E_TaskPSP < ((uint32_t)(&_eheap))){
 			return ;
+		}*/
+		
+		/* 8 Bytes Safety margin after Task stack */
+		OS_Control.Task_Locator_PSP = Task->_E_TaskPSP - 8;
+		
+		/* Create Stack For Task */
+		MyRTOS_CreateTaskStack(Task);
+		
+		/* Put Task in tasks array */
+		OS_Control.Tasks[OS_Control.Number_Of_Active_Tasks] = Task;
+		(OS_Control.Number_Of_Active_Tasks)++;
+		
+		
+		/* Set Task State to Suspeneded */
+		Task->Task_State = TASK_SUSPENDED;
+		
+		
+	}
+	
+	/* Activate Task */
+	void MyRTOS_ActivateTask(Task_Reference *Task) {
+		
+		/* Change Task State to waiting from suspneded */
+		Task->Task_State = TASK_WAITING;
+		
+		/* Call SVC Exception */
+		MyRTOS_SVC_Set(ACTIVATE_TASK);
+		
+	}
+	
+	
+	/* Idle Task */
+	void MyRTOS_IdleTask(void){
+		while(1) {
+			IdleLed ^= 1;
+			/* Low Power consumption , increase perfomance , wait for exception */
+			__asm("wfe");
 		}
 	}
 	
-}
-/* Release Mutex */
-void MyRTOS_ReleaseMutex(Mutex_Reference* Mutex){
-	
-	if(Mutex->Current_Task != NULL) {
+	/* Create Main Stack MSP */
+	void MyRTOS_SetMainStack(void){
 		
-		Mutex->Current_Task = Mutex->Next_Task;
-		Mutex->Next_Task = NULL;
+		/* Set start and end of main stack */
+		OS_Control._S_MSP = (uint32_t)&_estack ;
+		OS_Control._E_MSP = OS_Control._S_MSP - MAIN_STACK_SIZE ;
 		
-		/* Change Task State */
-		Mutex->Current_Task->Task_State = TASK_WAITING;
-		MyRTOS_SVC_Set(ACTIVATE_TASK);
+		/* 8 Bytes Safety margin after main stack */
+		OS_Control.Task_Locator_PSP = OS_Control._E_MSP - 8;
+		
 	}
 	
-}
-
-
-/* Bubble sort tasks  */
-void bubbleSort()
-{
-	unsigned int i, j , n;
-	Task_Reference* temp ;
-	n = OS_Control.Number_Of_Active_Tasks  ;
-	for (i = 0; i < n -1 ; i++)
+	/* Creates Task Stack PSP */
+	void MyRTOS_CreateTaskStack(Task_Reference* Task) {
+		
+		/* Task Frame */
+		/*
+			* Pushed by MC :
+			* XPSR
+			* PC
+			* LR
+			* R12
+			* R3
+			* R2
+			* R1
+			* R0
+			* Pushed by user code :
+			* R4
+			* R5
+			* R6
+			* R7
+			* R8
+			* R9
+			* R11
+		*/
+		
+		Task->Current_PSP = (uint32_t *)Task->_S_TaskPSP;                    /* Set current PSP to Start address of stack of task */
+		
+		(Task->Current_PSP)--;
+		*(Task->Current_PSP) = 0x1000000;                        /* Push Dummy LR to stack , Bit-24 Must be 1 (thumb bit)*/
+		
+		(Task->Current_PSP)--;
+		*(Task->Current_PSP) = (uint32_t)Task->p_TaskEntry;      /* Set PC to Task Entry */
+		
+		(Task->Current_PSP)--;
+		*(Task->Current_PSP) = 0xFFFFFFFD ;                      /* LR = 0xFFFFFFFD (EXC_RETURN)Return to thread with PSP */
+		
+		/* Set from R0 to R12 with 0x00 */
+		for(uint8_t i = 0 ; i < 13 ; i++) {
+			(Task->Current_PSP)--;
+			*(Task->Current_PSP) = 0x00;
+		}
+	}
 	
-	// Last i elements are already in place
-	for (j = 0; j < n - i - 1; j++)
-	if (OS_Control.Tasks[j]->Task_Priority > OS_Control.Tasks[j + 1]->Task_Priority)
+	
+	/* Terminates Task */
+	void MyRTOS_TerminateTask(Task_Reference *Task) {
+		
+		/* Set Task State */
+		Task->Task_State = TASK_SUSPENDED;
+		/* Call SVC Exception */
+		MyRTOS_SVC_Set(TERMINATE_TASK);
+		
+	}
+	
+	/* Put task in suspennded untill time is over */
+	void MyRTOS_waitTask(uint32_t ticks,Task_Reference *Task) {
+		
+		/* Set Timing Wait and state */
+		Task->Time_Waiting.Blocking_State = ENABLED;
+		Task->Time_Waiting.Ticks_Count = ticks;
+		
+		/* Suspend task */
+		Task->Task_State = TASK_SUSPENDED;
+		
+		/* Terminate Task */
+		MyRTOS_SVC_Set(TERMINATE_TASK);
+	}
+	
+	/* Update Task Waiting Time */
+	void MyRTOS_updateWaitingTime(void) {
+		
+		/* Loop over active tasks */
+		for (int var = 0; var < OS_Control.Number_Of_Active_Tasks; var++) {
+			
+			/* Check if Task is in waiting */
+			if(OS_Control.Tasks[var]->Task_State == TASK_SUSPENDED) {
+				
+				/* Check if Timing waiting is enabled */
+				if(OS_Control.Tasks[var]->Time_Waiting.Blocking_State == ENABLED) {
+					
+					/* Decrement ticks */
+					OS_Control.Tasks[var]->Time_Waiting.Ticks_Count--;
+					
+					/* Check if time is ended */
+					if(OS_Control.Tasks[var]->Time_Waiting.Ticks_Count == 1) {
+						
+						/* Disable time waiting */
+						OS_Control.Tasks[var]->Time_Waiting.Blocking_State = DISABLED;
+						
+						/* Change state of task to waiting */
+						OS_Control.Tasks[var]->Task_State = TASK_WAITING;
+						
+						/* Call SVC */
+						MyRTOS_SVC_Set(WAITING_TASK);
+					}
+				}
+			}
+			
+		}
+	}
+	
+	
+	/* Acquire Mutex */
+	void MyRTOS_AcquierMutex(Mutex_Reference* Mutex,Task_Reference* Task){
+		
+		/* Check if mutex is free */
+		if(Mutex->Current_Task == NULL) {
+			/* Assign mutex to task */
+			Mutex->Current_Task = Task;
+		}
+		else
+		{
+			if(Mutex->Next_Task == NULL){
+				
+				/* Set Mutex to Next Task */
+				Mutex->Next_Task = Task;
+				
+				/* Change Task state to suppedned */
+				Task->Task_State = TASK_SUSPENDED;
+				MyRTOS_SVC_Set(TERMINATE_TASK);
+				
+			}
+			else{
+				
+				/* Cannot acquire mutex */
+				return ;
+			}
+		}
+		
+	}
+	/* Release Mutex */
+	void MyRTOS_ReleaseMutex(Mutex_Reference* Mutex){
+		
+		if(Mutex->Current_Task != NULL) {
+			
+			Mutex->Current_Task = Mutex->Next_Task;
+			Mutex->Next_Task = NULL;
+			
+			/* Change Task State */
+			Mutex->Current_Task->Task_State = TASK_WAITING;
+			MyRTOS_SVC_Set(ACTIVATE_TASK);
+		}
+		
+	}
+	
+	
+	/* Bubble sort tasks  */
+	void bubbleSort()
 	{
-		temp = OS_Control.Tasks[j] ;
-		OS_Control.Tasks[j] = OS_Control.Tasks[j + 1 ] ;
-		OS_Control.Tasks[j + 1] = temp ;
+		unsigned int i, j , n;
+		Task_Reference* temp ;
+		n = OS_Control.Number_Of_Active_Tasks  ;
+		for (i = 0; i < n -1 ; i++)
+		
+		// Last i elements are already in place
+		for (j = 0; j < n - i - 1; j++)
+		if (OS_Control.Tasks[j]->Task_Priority > OS_Control.Tasks[j + 1]->Task_Priority)
+		{
+			temp = OS_Control.Tasks[j] ;
+			OS_Control.Tasks[j] = OS_Control.Tasks[j + 1 ] ;
+			OS_Control.Tasks[j + 1] = temp ;
+		}
+		
 	}
 	
-}
-
-
-
+	
+	
