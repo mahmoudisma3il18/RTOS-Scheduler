@@ -26,7 +26,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "scheduler.h"
+#include "D:\Embedded Systems\GitHub Projects\RTOS-Scheduler\RTOS Layers\inc\scheduler.h"
 #include "string.h"
 
 Mutex_Reference Mutex1,Mutex2 ;
@@ -37,13 +37,16 @@ unsigned char payload2[3] = {1,2,3} ;
 Task_Reference Task1_Ref;
 Task_Reference Task2_Ref,Task3_Ref,Task4_Ref;
 uint8_t Task1Led,Task2Led,Task3Led,Task4Led;
+uint32_t stack_used;
 
 void Task1(void){
 
-	static int counter =0 ;
 	while(1){
 		Task1Led ^= 0x1;  /* Logic High */
-		MyRTOS_waitTask(2,&Task1_Ref);
+		uint8_t x = 4;
+		x++;
+		stack_used = MyRTOS_stackUsage(&Task1_Ref);
+		/*MyRTOS_waitTask(2,&Task1_Ref);*/
 //		counter++;
 //		if(counter == 100)
 //		{
@@ -165,7 +168,7 @@ int main(void)
 	MyRTOS_CreateTask(&Task4_Ref);
 
 	MyRTOS_ActivateTask(&Task1_Ref);
-	MyRTOS_ActivateTask(&Task2_Ref);
+	/*MyRTOS_ActivateTask(&Task2_Ref);*/
 
 
 

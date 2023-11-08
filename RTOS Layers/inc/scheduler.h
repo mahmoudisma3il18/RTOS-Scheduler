@@ -75,5 +75,9 @@ void MyRTOS_AcquierMutex(Mutex_Reference* Mutex,Task_Reference* Task);
 /* Release Mutex */
 void MyRTOS_ReleaseMutex(Mutex_Reference* Mutex);
 
+/* Returns stack usage in bytes */
+uint32_t MyRTOS_stackUsage(Task_Reference *Task);
+
+
 
 #endif /* Scheduler_H_ */

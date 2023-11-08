@@ -573,6 +573,21 @@ void MyRTOS_decideWhatNext(void) {
 		}
 		
 	}
+
+
+	/* Returns stack usage in bytes */
+uint32_t MyRTOS_stackUsage(Task_Reference *Task) {
+
+    /* Varaible to hold size*/
+	uint32_t stack_used_in_bytes = 0;
+
+    /* Calculate stack used*/
+	stack_used_in_bytes = (Task->_S_TaskPSP) - (uint32_t)(Task->Current_PSP);
+
+	/* Returns value*/
+	return stack_used_in_bytes;
+
+}
 	
 	
 	

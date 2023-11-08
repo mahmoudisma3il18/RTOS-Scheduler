@@ -21,6 +21,10 @@ objects/fifo.o: RTOS\ Layers/FIFO.c RTOS\ Layers/inc/FIFO.h \
  c:\program\ files\ (x86)\arm\ gnu\ toolchain\ arm-none-eabi\12.3\ rel1\arm-none-eabi\include\sys\_intsup.h \
  c:\program\ files\ (x86)\arm\ gnu\ toolchain\ arm-none-eabi\12.3\ rel1\arm-none-eabi\include\sys\_stdint.h \
  RTOS\ Layers/inc/scheduler.h RTOS\ Layers/inc/CortexMx_OS_Porting.h \
- CMSIS/ARMCM3.h CMSIS/core_cm3.h CMSIS/cmsis_version.h \
- CMSIS/cmsis_compiler.h CMSIS/cmsis_gcc.h CMSIS/system_ARMCM3.h \
- CMSIS/core_cm3.h
+ D:\Embedded\ Systems\GitHub\ Projects\RTOS-Scheduler\CMSIS\ARMCM3.h \
+ D:\Embedded\ Systems\GitHub\ Projects\RTOS-Scheduler\CMSIS\core_cm3.h \
+ D:\Embedded\ Systems\GitHub\ Projects\RTOS-Scheduler\CMSIS\cmsis_version.h \
+ D:\Embedded\ Systems\GitHub\ Projects\RTOS-Scheduler\CMSIS\cmsis_compiler.h \
+ D:\Embedded\ Systems\GitHub\ Projects\RTOS-Scheduler\CMSIS\cmsis_gcc.h \
+ D:\Embedded\ Systems\GitHub\ Projects\RTOS-Scheduler\CMSIS\system_ARMCM3.h \
+ D:\Embedded\ Systems\GitHub\ Projects\RTOS-Scheduler\CMSIS\core_cm3.h
