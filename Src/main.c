@@ -26,7 +26,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "D:\Embedded Systems\GitHub Projects\RTOS-Scheduler\RTOS Layers\inc\scheduler.h"
+#include "scheduler.h"
 #include "string.h"
 
 Mutex_Reference Mutex1,Mutex2 ;

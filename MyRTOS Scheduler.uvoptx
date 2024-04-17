@@ -151,7 +151,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>D:\Embedded Systems\GitHub Projects\RTOS-Scheduler\Src\main.c</Filename>
+          <Filename>D:\Projects\GitHub Projects\RTOS-Scheduler\Src\main.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\MyRTOS_Scheduler\Src/main.c\45</Expression>
         </Bp>

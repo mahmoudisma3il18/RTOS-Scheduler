@@ -2,8 +2,8 @@
 #define CortexMx_OS_Porting_H_
 
 /* ----------------------- Includes ------------------------ */
-#include "D:\Embedded Systems\GitHub Projects\RTOS-Scheduler\CMSIS\ARMCM3.h"
-#include "D:\Embedded Systems\GitHub Projects\RTOS-Scheduler\CMSIS\core_cm3.h"
+#include "ARMCM3.h"
+#include "core_cm3.h"
 
 /*----------------------- Defines --------------------------*/
 
